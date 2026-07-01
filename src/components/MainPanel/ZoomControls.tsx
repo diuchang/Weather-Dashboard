@@ -1,0 +1,26 @@
+import { useDashboardStore } from '../../store/dashboardStore';
+
+const ZOOMS: (0.5 | 1 | 2)[] = [0.5, 1, 2];
+
+export default function ZoomControls() {
+  const zoomLevel = useDashboardStore((s) => s.zoomLevel);
+  const setZoomLevel = useDashboardStore((s) => s.setZoomLevel);
+
+  return (
+    <div className="flex items-center rounded-lg overflow-hidden border border-white/10">
+      {ZOOMS.map((z) => (
+        <button
+          key={z}
+          onClick={() => setZoomLevel(z)}
+          className={`px-3 py-1.5 text-xs font-medium transition-colors border-r border-white/10 last:border-0 ${
+            zoomLevel === z
+              ? 'bg-blue-500/20 text-blue-300'
+              : 'bg-panel-700 text-slate-400 hover:text-white hover:bg-white/5'
+          }`}
+        >
+          {z}×
+        </button>
+      ))}
+    </div>
+  );
+}
