@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useDashboardStore } from '../../store/dashboardStore';
 import { useWeather } from '../../hooks/useWeather';
 import { getWeatherInfo } from '../../utils/weatherCodes';
-import WeatherIcon from '../shared/WeatherIcon';
 import LoadingSpinner from '../shared/LoadingSpinner';
 import { format, parseISO } from 'date-fns';
 
@@ -13,6 +12,16 @@ const TABS: { key: Metric; label: string }[] = [
   { key: 'rainfall', label: 'Rainfall' },
   { key: 'humidity', label: 'Humidity' },
 ];
+
+function lerpColor(a: [number, number, number], b: [number, number, number], t: number) {
+  const c = a.map((v, i) => Math.round(v + (b[i] - v) * t));
+  return `rgb(${c[0]}, ${c[1]}, ${c[2]})`;
+}
+
+const GREEN: [number, number, number] = [34, 197, 94];
+const ORANGE: [number, number, number] = [249, 115, 22];
+const CYAN: [number, number, number] = [6, 182, 212];
+const PURPLE: [number, number, number] = [124, 58, 237];
 
 export default function DailyForecast() {
   const city = useDashboardStore((s) => s.selectedCity);
@@ -47,10 +56,23 @@ export default function DailyForecast() {
     humidity: Math.round(humidityByDate[time.slice(0, 10)] ?? 0),
   })) ?? [];
 
-  const weekMin = Math.min(...days.map((d) => d.min));
-  const weekMax = Math.max(...days.map((d) => d.max));
-  const tempSpan = Math.max(weekMax - weekMin, 1);
+  const tempHi = Math.max(...days.map((d) => d.max));
+  const tempLo = Math.min(...days.map((d) => d.max));
+  const tempSpan = Math.max(tempHi - tempLo, 1);
   const maxPrecip = Math.max(...days.map((d) => d.precip), 1);
+
+  function barFor(day: (typeof days)[number]): { label: string; t: number; color: string } {
+    if (metric === 'temperature') {
+      const t = (day.max - tempLo) / tempSpan;
+      return { label: `${day.max}°`, t, color: lerpColor(GREEN, ORANGE, t) };
+    }
+    if (metric === 'rainfall') {
+      const t = day.precip / maxPrecip;
+      return { label: `${day.precip.toFixed(1)}`, t, color: 'rgb(59, 130, 246)' };
+    }
+    const t = day.humidity / 100;
+    return { label: `${day.humidity}%`, t, color: lerpColor(CYAN, PURPLE, t) };
+  }
 
   return (
     <div className="rounded-xl bg-panel-800 border border-white/5 p-4">
@@ -73,54 +95,29 @@ export default function DailyForecast() {
         ))}
       </div>
 
-      <div className="flex flex-col gap-1">
-        {days.map((day, i) => (
-          <div key={i} className="flex items-center gap-2 py-1.5 border-b border-white/5 last:border-0">
-            <span className="text-xs text-slate-400 w-8 flex-none">{i === 0 ? 'Today' : format(day.date, 'EEE')}</span>
-            <WeatherIcon icon={day.info.icon} size={20} className="text-sky-300 flex-none" />
+      <div className="flex items-end justify-between gap-1">
+        {days.map((day, i) => {
+          const { label, t, color } = barFor(day);
+          const heightPct = 25 + t * 75;
+          return (
+            <div key={i} className="flex-1 flex flex-col items-center gap-2 min-w-0">
+              <span className="text-[11px] text-slate-400 flex-none">
+                {i === 0 ? 'Today' : format(day.date, 'EEE')}
+              </span>
 
-            {metric === 'temperature' && (
-              <>
-                <div className="flex-1 mx-1 h-1.5 rounded-full bg-white/5 relative">
-                  <div
-                    className="absolute h-full rounded-full"
-                    style={{
-                      left: `${((day.min - weekMin) / tempSpan) * 100}%`,
-                      width: `${Math.max(((day.max - day.min) / tempSpan) * 100, 6)}%`,
-                      background: 'linear-gradient(to right, #3b82f6, #f97316)',
-                    }}
-                  />
-                </div>
-                <span className="text-xs font-medium text-orange-300 w-8 text-right flex-none">{day.max}°</span>
-                <span className="text-xs text-slate-500 w-8 text-right flex-none">{day.min}°</span>
-              </>
-            )}
+              <div className="flex items-end w-full justify-center h-28">
+                <div
+                  className="w-2.5 rounded-full transition-all"
+                  style={{ height: `${heightPct}%`, backgroundColor: color }}
+                />
+              </div>
 
-            {metric === 'rainfall' && (
-              <>
-                <div className="flex-1 mx-1 h-1.5 rounded-full bg-white/5">
-                  <div
-                    className="h-full rounded-full bg-blue-500"
-                    style={{ width: `${(day.precip / maxPrecip) * 100}%`, minWidth: day.precip > 0 ? 4 : 0 }}
-                  />
-                </div>
-                <span className="text-xs font-medium text-blue-300 w-14 text-right flex-none">{day.precip.toFixed(1)} mm</span>
-              </>
-            )}
-
-            {metric === 'humidity' && (
-              <>
-                <div className="flex-1 mx-1 h-1.5 rounded-full bg-white/5">
-                  <div
-                    className="h-full rounded-full"
-                    style={{ width: `${day.humidity}%`, background: 'linear-gradient(to right, #06b6d4, #7c3aed)' }}
-                  />
-                </div>
-                <span className="text-xs font-medium text-purple-300 w-14 text-right flex-none">{day.humidity}%</span>
-              </>
-            )}
-          </div>
-        ))}
+              <span className="text-[11px] font-medium flex-none" style={{ color }}>
+                {label}
+              </span>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

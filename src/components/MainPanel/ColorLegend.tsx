@@ -15,7 +15,7 @@ export default function ColorLegend() {
   const gradient = getLayerGradient(weatherLayer);
 
   return (
-    <div className="flex items-center gap-2 rounded-lg bg-panel-700 border border-white/10 px-3 py-2">
+    <div className="flex items-center gap-2 rounded-lg bg-panel-700 border border-white/10 px-3 py-2 whitespace-nowrap">
       <span className="text-xs text-slate-400 mr-1">{LAYER_LABELS[weatherLayer]}</span>
       <span className="text-xs text-slate-500">{min}{unit}</span>
       <div

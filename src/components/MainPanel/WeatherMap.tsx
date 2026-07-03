@@ -2,15 +2,22 @@ import { useEffect, useRef, useState } from 'react';
 import { MapContainer, TileLayer, useMap, GeoJSON } from 'react-leaflet';
 import L from 'leaflet';
 import { useDashboardStore } from '../../store/dashboardStore';
+import type { MapMode } from '../../store/dashboardStore';
+import { useThemeStore } from '../../store/themeStore';
 import { useAllCitiesWeather } from '../../hooks/useAllCitiesWeather';
 import { CITIES } from '../../data/cities';
 import { getLayerColor, formatLayerValue } from '../../utils/colorScales';
 import type { WeatherLayer, WeatherResponse } from '../../types';
 import LoadingSpinner from '../shared/LoadingSpinner';
+import ZoomControls from './ZoomControls';
+import LayerSelector from './LayerSelector';
+import ColorLegend from './ColorLegend';
+import MapModeSelector from './MapModeSelector';
 
 const VIETNAM_CENTER: [number, number] = [16.5, 107.5];
 const BASE_ZOOM = 6;
 const DARK_TILES = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+const LIGHT_TILES = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
 
 function getLayerValue(
   hourly: WeatherResponse['hourly'],
@@ -34,14 +41,51 @@ function ZoomController() {
   return null;
 }
 
+function MapResizer() {
+  const map = useMap();
+  useEffect(() => {
+    const container = map.getContainer();
+    const observer = new ResizeObserver(() => map.invalidateSize());
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, [map]);
+  return null;
+}
+
 interface MapMarkersProps {
   cityData: Map<string, WeatherResponse>;
 }
+
+const MODE_STYLES: Record<MapMode, (color: string) => L.CircleMarkerOptions> = {
+  circles: (color) => ({
+    radius: 9,
+    fillColor: color,
+    fillOpacity: 0.9,
+    color: '#0a0f1e',
+    weight: 1.5,
+    stroke: true,
+  }),
+  color: (color) => ({
+    radius: 26,
+    fillColor: color,
+    fillOpacity: 0.4,
+    stroke: false,
+    weight: 0,
+  }),
+  dots: (color) => ({
+    radius: 4,
+    fillColor: color,
+    fillOpacity: 1,
+    stroke: false,
+    weight: 0,
+  }),
+};
 
 function MapMarkers({ cityData }: MapMarkersProps) {
   const map = useMap();
   const weatherLayer = useDashboardStore((s) => s.weatherLayer);
   const currentHour = useDashboardStore((s) => s.currentHour);
+  const mapMode = useDashboardStore((s) => s.mapMode);
   const setSelectedCity = useDashboardStore((s) => s.setSelectedCity);
   const markersRef = useRef<Map<string, L.CircleMarker>>(new Map());
 
@@ -78,7 +122,7 @@ function MapMarkers({ cityData }: MapMarkersProps) {
       const value = getLayerValue(data.hourly, weatherLayer, currentHour);
       const color = getLayerColor(weatherLayer, value);
       const label = formatLayerValue(weatherLayer, value);
-      marker.setStyle({ fillColor: color, color: '#0a0f1e' });
+      marker.setStyle(MODE_STYLES[mapMode](color));
       marker.unbindTooltip();
       marker.bindTooltip(`<strong>${city.name}</strong><br/>${label}`, {
         permanent: false,
@@ -86,7 +130,7 @@ function MapMarkers({ cityData }: MapMarkersProps) {
         offset: [0, -10],
       });
     });
-  }, [cityData, weatherLayer, currentHour]);
+  }, [cityData, weatherLayer, currentHour, mapMode]);
 
   return null;
 }
@@ -94,6 +138,8 @@ function MapMarkers({ cityData }: MapMarkersProps) {
 export default function WeatherMap() {
   const { cityData, loading } = useAllCitiesWeather();
   const [geoData, setGeoData] = useState<GeoJSON.FeatureCollection | null>(null);
+  const theme = useThemeStore((s) => s.theme);
+  const isLight = theme === 'light';
 
   useEffect(() => {
     fetch('/vietnam-provinces.geojson')
@@ -102,12 +148,9 @@ export default function WeatherMap() {
       .catch(() => {});
   }, []);
 
-  const geoStyle: L.PathOptions = {
-    color: '#1e2d4a',
-    weight: 1,
-    fillColor: '#0d1526',
-    fillOpacity: 0.4,
-  };
+  const geoStyle: L.PathOptions = isLight
+    ? { color: '#d6d0c0', weight: 1, fillColor: '#f4f1e9', fillOpacity: 0.4 }
+    : { color: '#1e2d4a', weight: 1, fillColor: '#0d1526', fillOpacity: 0.4 };
 
   return (
     <div className="relative w-full h-full">
@@ -123,16 +166,28 @@ export default function WeatherMap() {
         className="w-full h-full"
         zoomControl={false}
         scrollWheelZoom={true}
-        style={{ background: '#060b17' }}
+        style={{ background: isLight ? '#f4f1e9' : '#060b17' }}
       >
         <TileLayer
-          url={DARK_TILES}
+          key={theme}
+          url={isLight ? LIGHT_TILES : DARK_TILES}
           attribution='&copy; <a href="https://carto.com/">CARTO</a>'
         />
         {geoData && <GeoJSON data={geoData} style={geoStyle} />}
         <MapMarkers cityData={cityData} />
         <ZoomController />
+        <MapResizer />
       </MapContainer>
+      <div className="absolute left-3 top-3 z-[1000]">
+        <MapModeSelector />
+      </div>
+      <div className="absolute right-3 top-1/2 -translate-y-1/2 z-[1000]">
+        <ZoomControls />
+      </div>
+      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-[1000] flex items-center gap-3">
+        <LayerSelector />
+        <ColorLegend />
+      </div>
     </div>
   );
 }
