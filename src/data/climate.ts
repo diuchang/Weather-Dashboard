@@ -65,10 +65,10 @@ export interface SeasonMeta {
 }
 
 export const SEASON_META: Record<SeasonType, SeasonMeta> = {
-  'hot-humid': { label: 'Hot & humid', color: '#f97316' },
-  rainy:       { label: 'Rainy', color: '#3b82f6' },
-  cool:        { label: 'Cool', color: '#06b6d4' },
-  mild:        { label: 'Mild', color: '#22c55e' },
+  'hot-humid': { label: 'Hot & humid', color: '#EEA530' },
+  rainy:       { label: 'Rainy', color: '#33449C' },
+  cool:        { label: 'Cool', color: '#18C5CC' },
+  mild:        { label: 'Mild', color: '#7BC367' },
 };
 
 export function classifySeason(m: MonthlyClimate): SeasonType {

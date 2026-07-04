@@ -53,7 +53,7 @@ export default function SearchBar() {
 
   return (
     <div ref={wrapperRef} className="relative flex-1 max-w-xs">
-      <div className="flex items-center gap-2 rounded-lg bg-panel-700 border border-white/10 px-3 py-2 focus-within:border-blue-500/50 transition-colors">
+      <div className="flex items-center gap-2 rounded-lg bg-panel-700 border border-white/10 px-3 py-2 focus-within:border-orange-500/50 transition-colors">
         <HiSearch size={14} className="text-slate-400 flex-none" />
         <input
           value={query}

@@ -12,7 +12,7 @@ export default function CurrentWeather() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-40 rounded-xl bg-panel-800 border border-white/5">
+      <div className="flex items-center justify-center h-40">
         <LoadingSpinner size={28} />
       </div>
     );
@@ -26,18 +26,16 @@ export default function CurrentWeather() {
   const info = getWeatherInfo(code);
 
   return (
-    <div className="rounded-xl bg-gradient-to-br from-panel-700 to-navy-900 border border-white/5 p-5">
+    <div className="py-6">
       <div className="flex items-start justify-between mb-1">
         <div>
-          <p className="text-xs text-slate-400 uppercase tracking-widest mb-1">Current Weather</p>
-          <h2 className="text-xl font-semibold text-white leading-tight">{city.name}</h2>
+          <p className="text-md font-semibold text-white mb-1">Current weather</p>
         </div>
-        <WeatherIcon icon={info.icon} size={52} className="text-sky-300 -mt-1" />
       </div>
 
       <div className="flex items-end gap-3 mt-3 mb-4">
-        <span className="text-6xl font-bold text-white leading-none">{temp}</span>
-        <span className="text-2xl text-slate-400 mb-2">°C</span>
+        <span className="text-9xl font-regular text-white leading-none">{temp}</span>
+        <span className="text-6xl font-thin text-slate-400 mb-2">°C</span>
       </div>
 
       <p className="text-sm text-slate-300 mb-4">{info.label}</p>

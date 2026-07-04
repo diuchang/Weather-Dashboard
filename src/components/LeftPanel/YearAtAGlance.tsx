@@ -36,8 +36,8 @@ function sectorPath(a0: number, a1: number, rOut: number, rIn: number) {
 // cool (green) -> hot (orange/red)
 function tempToColor(temp: number): string {
   const t = Math.max(0, Math.min(1, (temp - 16) / 20));
-  const hue = 120 - t * 105; // 120 green -> 15 orange-red
-  return `hsl(${hue}, 62%, 48%)`;
+  const hue = 70 - t * 80; // 120 green -> 15 orange-red
+  return `hsl(${hue}, 70%, 50%)`;
 }
 
 export default function YearAtAGlance() {
@@ -69,8 +69,8 @@ export default function YearAtAGlance() {
   const tipPos = hovered !== null ? polar(hovered * 30 + 15, (R_OUT + R_IN) / 2) : null;
 
   return (
-    <div className="rounded-xl bg-panel-800 border border-white/5 p-4 mb-2">
-      <p className="text-xs text-slate-400 uppercase tracking-widest mb-3">Year at a Glance</p>
+    <div className="py-6">
+      <p className="text-md font-semibold text-white mb-3">Year at a glance</p>
 
       <div className="flex items-center justify-center gap-3">
         <div className="relative w-52 h-52 flex-none">
@@ -108,7 +108,7 @@ export default function YearAtAGlance() {
           })}
 
           {/* current-month pointer */}
-          <circle cx={pointer.x} cy={pointer.y} r={4} fill="#fff" />
+          <circle cx={pointer.x} cy={pointer.y} r={4} fill="#f97316" />
 
           {/* center label */}
           <text
@@ -142,7 +142,7 @@ export default function YearAtAGlance() {
               <span className="w-2 h-2 rounded-full" style={{ backgroundColor: tempToColor(monthly[hovered]) }} />
               <span className="text-xs font-semibold text-white">{MONTH_FULL[hovered]}</span>
               {hovered === currentMonth && (
-                <span className="text-[9px] uppercase tracking-wide text-blue-300 bg-blue-500/20 rounded px-1">Now</span>
+                <span className="text-[9px] uppercase tracking-wide text-orange-300 bg-orange-500/20 rounded px-1">Now</span>
               )}
             </div>
             <div className="mt-0.5 flex items-baseline gap-1.5">

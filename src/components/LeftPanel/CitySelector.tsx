@@ -39,7 +39,7 @@ export default function CitySelector() {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="w-full flex items-center justify-between gap-2 rounded-lg bg-panel-700 border border-white/10 px-3 py-2.5 text-sm text-white hover:border-blue-500/50 transition-colors"
+        className="w-full flex items-center justify-between gap-2 rounded-lg bg-panel-700 border border-white/10 px-3 py-2.5 text-sm text-white hover:border-orange-500/50 transition-colors"
       >
         <span className="truncate">{selectedCity.name}</span>
         <HiChevronDown size={16} className={`text-slate-400 transition-transform ${open ? 'rotate-180' : ''}`} />
@@ -69,7 +69,7 @@ export default function CitySelector() {
                     onClick={() => select(city)}
                     className={`w-full text-left px-3 py-2 text-sm transition-colors ${
                       city.id === selectedCity.id
-                        ? 'text-blue-400 bg-blue-500/10'
+                        ? 'text-orange-400 bg-orange-500/10'
                         : 'text-slate-300 hover:bg-white/5 hover:text-white'
                     }`}
                   >

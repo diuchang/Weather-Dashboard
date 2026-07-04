@@ -16,9 +16,9 @@ function statusOf(score: number): Status {
 }
 
 const STATUS_META: Record<Status, { label: string; text: string; dot: string }> = {
-  pleasant: { label: 'Pleasant', text: 'text-green-400', dot: 'bg-green-400' },
-  attention: { label: 'Watch out', text: 'text-orange-400', dot: 'bg-orange-400' },
-  adverse: { label: 'Adverse', text: 'text-red-400', dot: 'bg-red-400' },
+  pleasant: { label: 'Pleasant', text: 'text-green-500', dot: 'bg-green-500' },
+  attention: { label: 'Watch out', text: 'text-orange-500', dot: 'bg-orange-500' },
+  adverse: { label: 'Adverse', text: 'text-red-500', dot: 'bg-red-500' },
 };
 
 interface Condition {
@@ -31,14 +31,14 @@ function ConditionCard({ title, description, score }: Condition) {
   const status = statusOf(score);
   const meta = STATUS_META[status];
   return (
-    <div className="flex-1 flex flex-col rounded-lg bg-panel-800 border border-white/5 p-3">
-      <p className="text-sm font-semibold text-white">{title}</p>
-      <p className="mt-1 text-[11px] leading-snug text-slate-400 flex-1">{description}</p>
-      <div className="mt-2 flex items-center gap-1.5">
+    <div className="flex-1 flex flex-col border-l border-white/10 first:border-l-0 pl-4 first:pl-0">
+      <p className={`text-4xl font-semibold ${meta.text}`}>{score.toFixed(1)}</p>
+      <div className="mt-1 flex items-center gap-1.5">
         <span className={`w-1.5 h-1.5 rounded-full ${meta.dot}`} />
-        <span className={`text-[11px] font-medium ${meta.text}`}>{meta.label}</span>
+        <span className={`text-[13px] font-medium ${meta.text}`}>{meta.label}</span>
       </div>
-      <p className={`mt-1 text-2xl font-semibold ${meta.text}`}>{score.toFixed(1)}</p>
+      <p className="mt-2 text-sm font-semibold text-white">{title}</p>
+      <p className="mt-1 text-[11px] leading-snug text-slate-400 flex-1">{description}</p>
     </div>
   );
 }
@@ -50,7 +50,7 @@ export default function TodaySummary() {
 
   if (loading || !data) {
     return (
-      <div className="flex items-center justify-center h-24 rounded-xl bg-panel-800 border border-white/5">
+      <div className="flex items-center justify-center h-24">
         <LoadingSpinner />
       </div>
     );
@@ -87,16 +87,16 @@ export default function TodaySummary() {
   ];
 
   return (
-    <div className="rounded-xl bg-gradient-to-br from-panel-700 to-navy-900 border border-white/5 p-4">
+    <div className="py-6">
       <div className="flex items-center gap-1.5">
-        <p className="text-sm font-semibold text-white">Key weather conditions</p>
+        <p className="text-md font-semibold text-white">Key weather conditions</p>
         <HiOutlineInformationCircle size={14} className="text-slate-500" />
       </div>
       <p className="mt-1 text-[11px] leading-snug text-slate-400">
         Three weather groups that explain at a glance why a day is rated pleasant, worth watching, or adverse.
       </p>
 
-      <div className="mt-3 flex gap-2">
+      <div className="mt-8 flex gap-2">
         {conditions.map((c) => (
           <ConditionCard key={c.title} {...c} />
         ))}

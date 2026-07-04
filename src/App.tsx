@@ -42,7 +42,7 @@ export default function App() {
         </div>
         <div
           onPointerDown={handlePointerDown}
-          className="w-1.5 h-full flex-none cursor-col-resize bg-white/5 hover:bg-blue-500/40 active:bg-blue-500/60 transition-colors"
+          className="w-1.5 h-full flex-none cursor-col-resize bg-white/5 hover:bg-orange-500/40 active:bg-orange-500/60 transition-colors"
         />
         <MainPanel />
       </div>

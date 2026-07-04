@@ -51,7 +51,9 @@ html, body, #root {
 }
 
 /* Light-mode overrides for hardcoded white/slate utility classes */
-html.light .text-white { color: #0f172a !important; }
+html.light .text-white,
+html.light .\!text-white { color: #0f172a !important; }
+html.light .fill-white { fill: #0f172a !important; }
 html.light .hover\:text-white:hover { color: #0f172a !important; }
 html.light .text-slate-300 { color: #334155 !important; }
 html.light .text-slate-400 { color: #64748b !important; }
@@ -59,6 +61,7 @@ html.light .text-slate-500 { color: #94a3b8 !important; }
 
 html.light .border-white\/5 { border-color: rgb(15 23 42 / 0.07) !important; }
 html.light .border-white\/10 { border-color: rgb(15 23 42 / 0.1) !important; }
+html.light .divide-white\/10 > :not([hidden]) ~ :not([hidden]) { border-color: rgb(15 23 42 / 0.1) !important; }
 html.light .border-white\/20 { border-color: rgb(15 23 42 / 0.15) !important; }
 html.light .hover\:border-white\/20:hover { border-color: rgb(15 23 42 / 0.2) !important; }
 
@@ -155,12 +158,12 @@ html.light .leaflet-container {
 .react-datepicker__day--in-range,
 .react-datepicker__day--range-start,
 .react-datepicker__day--range-end {
-  background-color: #3b82f6 !important;
+  background-color: #f97316 !important;
   color: #fff !important;
   border-radius: 4px !important;
 }
 .react-datepicker__day--in-selecting-range {
-  background-color: rgba(59, 130, 246, 0.3) !important;
+  background-color: rgba(249, 115, 22, 0.3) !important;
 }
 .react-datepicker__day--keyboard-selected {
   background-color: #1e3a5f !important;
@@ -187,7 +190,7 @@ html.light .leaflet-container {
   width: 100%;
 }
 .react-datepicker__input-container input:focus {
-  border-color: #3b82f6;
+  border-color: #f97316;
 }
 .react-datepicker-popper {
   z-index: 1000 !important;
@@ -215,7 +218,7 @@ html.light .react-datepicker__day:hover {
   background-color: #e2e8f0 !important;
 }
 html.light .react-datepicker__day--keyboard-selected {
-  background-color: #bfdbfe !important;
+  background-color: #fed7aa !important;
   color: #0f172a !important;
 }
 html.light .react-datepicker__day--disabled {
@@ -244,7 +247,7 @@ input[type="range"]::-webkit-slider-thumb {
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: #3b82f6;
+  background: #f97316;
   cursor: pointer;
   border: 2px solid #0a0f1e;
 }
@@ -252,7 +255,7 @@ input[type="range"]::-moz-range-thumb {
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: #3b82f6;
+  background: #f97316;
   cursor: pointer;
   border: 2px solid #0a0f1e;
 }
@@ -265,8 +268,8 @@ input[type="range"]::-moz-range-thumb {
     --card-foreground: oklch(0.145 0 0);
     --popover: oklch(1 0 0);
     --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.488 0.243 264.376);
-    --primary-foreground: oklch(0.97 0.014 254.604);
+    --primary: oklch(0.705 0.213 47.604);
+    --primary-foreground: oklch(0.98 0.016 73.684);
     --secondary: oklch(0.967 0.001 286.375);
     --secondary-foreground: oklch(0.21 0.006 285.885);
     --muted: oklch(0.97 0 0);
@@ -299,8 +302,8 @@ input[type="range"]::-moz-range-thumb {
     --card-foreground: oklch(0.985 0 0);
     --popover: oklch(0.205 0 0);
     --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.424 0.199 265.638);
-    --primary-foreground: oklch(0.97 0.014 254.604);
+    --primary: oklch(0.646 0.222 41.116);
+    --primary-foreground: oklch(0.98 0.016 73.684);
     --secondary: oklch(0.274 0.006 286.033);
     --secondary-foreground: oklch(0.985 0 0);
     --muted: oklch(0.269 0 0);

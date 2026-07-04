@@ -18,10 +18,10 @@ function lerpColor(a: [number, number, number], b: [number, number, number], t: 
   return `rgb(${c[0]}, ${c[1]}, ${c[2]})`;
 }
 
-const GREEN: [number, number, number] = [34, 197, 94];
-const ORANGE: [number, number, number] = [249, 115, 22];
+const GREEN: [number, number, number] = [123, 195, 103];
+const ORANGE: [number, number, number] = [238, 165, 48];
 const CYAN: [number, number, number] = [6, 182, 212];
-const PURPLE: [number, number, number] = [124, 58, 237];
+const PURPLE: [number, number, number] = [51, 68, 156];
 
 export default function DailyForecast() {
   const city = useDashboardStore((s) => s.selectedCity);
@@ -29,7 +29,7 @@ export default function DailyForecast() {
   const [metric, setMetric] = useState<Metric>('temperature');
 
   if (loading) return (
-    <div className="flex items-center justify-center h-40 rounded-xl bg-panel-800 border border-white/5">
+    <div className="flex items-center justify-center h-40">
       <LoadingSpinner />
     </div>
   );
@@ -68,31 +68,32 @@ export default function DailyForecast() {
     }
     if (metric === 'rainfall') {
       const t = day.precip / maxPrecip;
-      return { label: `${day.precip.toFixed(1)}`, t, color: 'rgb(59, 130, 246)' };
+      return { label: `${day.precip.toFixed(1)}`, t, color: 'rgb(102, 135, 215)' };
     }
     const t = day.humidity / 100;
     return { label: `${day.humidity}%`, t, color: lerpColor(CYAN, PURPLE, t) };
   }
 
   return (
-    <div className="rounded-xl bg-panel-800 border border-white/5 p-4">
-      <p className="text-xs text-slate-400 uppercase tracking-widest mb-3">7-Day Forecast</p>
-
-      {/* Metric tabs */}
-      <div className="flex gap-1 mb-3">
-        {TABS.map(({ key, label }) => (
-          <button
-            key={key}
-            onClick={() => setMetric(key)}
-            className={`flex-1 px-2 py-1 rounded-md text-[11px] font-medium transition-colors ${
-              metric === key
-                ? 'bg-blue-500/20 text-blue-300 border border-blue-500/40'
-                : 'bg-white/5 text-slate-400 border border-transparent hover:text-slate-200'
-            }`}
-          >
-            {label}
-          </button>
-        ))}
+    <div className="py-6">
+      {/* Header with metric tabs on the right */}
+      <div className="flex items-center justify-between gap-2 mb-6">
+        <p className="text-md font-semibold text-white">7-day forecast</p>
+        <div className="flex gap-1">
+          {TABS.map(({ key, label }) => (
+            <button
+              key={key}
+              onClick={() => setMetric(key)}
+              className={`px-2 py-1 rounded-md text-[11px] font-medium transition-colors ${
+                metric === key
+                  ? 'bg-orange-500/20 text-orange-300 border border-orange-500/40'
+                  : 'bg-white/5 text-slate-400 border border-transparent hover:text-slate-200'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="flex items-end justify-between gap-1">
@@ -101,19 +102,18 @@ export default function DailyForecast() {
           const heightPct = 25 + t * 75;
           return (
             <div key={i} className="flex-1 flex flex-col items-center gap-2 min-w-0">
-              <span className="text-[11px] text-slate-400 flex-none">
-                {i === 0 ? 'Today' : format(day.date, 'EEE')}
-              </span>
-
-              <div className="flex items-end w-full justify-center h-28">
+              <div className="flex flex-col items-center justify-end w-full h-28">
+                <span className="text-[11px] font-medium flex-none mb-2" style={{ color }}>
+                  {label}
+                </span>
                 <div
                   className="w-2.5 rounded-full transition-all"
                   style={{ height: `${heightPct}%`, backgroundColor: color }}
                 />
               </div>
 
-              <span className="text-[11px] font-medium flex-none" style={{ color }}>
-                {label}
+              <span className="text-[11px] text-slate-400 flex-none">
+                {i === 0 ? 'Today' : format(day.date, 'EEE')}
               </span>
             </div>
           );
