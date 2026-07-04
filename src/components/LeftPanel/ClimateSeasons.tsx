@@ -58,10 +58,10 @@ export default function ClimateSeasons() {
   }, [data]);
 
   return (
-    <div className="rounded-xl bg-panel-800 border border-white/5 p-4">
-      <p className="text-xs text-slate-400 uppercase tracking-widest mb-3">Climate Seasons</p>
+    <div className="py-6">
+      <p className="text-md font-semibold text-white mb-3">Climate seasons</p>
 
-      <div className="h-32 -ml-2">
+      <div className="h-48 -ml-2">
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart data={data} margin={{ top: 4, right: 4, bottom: 0, left: 4 }}>
             <XAxis
@@ -95,18 +95,6 @@ export default function ClimateSeasons() {
             />
           </ComposedChart>
         </ResponsiveContainer>
-      </div>
-
-      {/* Season band across the year */}
-      <div className="flex gap-px mt-2 rounded overflow-hidden">
-        {data.map((d, i) => (
-          <div
-            key={i}
-            className={`flex-1 h-2 ${i === currentMonth ? 'ring-1 ring-white/60' : ''}`}
-            style={{ backgroundColor: SEASON_META[d.season].color, opacity: 0.85 }}
-            title={`${d.m}: ${SEASON_META[d.season].label}`}
-          />
-        ))}
       </div>
 
       {/* Legend */}

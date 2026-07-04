@@ -40,19 +40,19 @@ export default function HourlyForecast() {
   }, [currentHour]);
 
   if (loading) return (
-    <div className="flex items-center justify-center h-24 rounded-xl bg-panel-800 border border-white/5">
+    <div className="flex items-center justify-center h-24">
       <LoadingSpinner />
     </div>
   );
 
   return (
-    <div className="rounded-xl bg-panel-800 border border-white/5 overflow-hidden">
-      <p className="text-xs text-slate-400 uppercase tracking-widest px-4 pt-4 pb-2">Today's Hourly</p>
+    <div className="py-6">
+      <p className="text-md font-semibold text-white pb-2">Today's hourly</p>
 
       {chartData.length > 0 && (
-        <div className="h-10 px-2">
+        <div className="h-20 py-2">
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={chartData}>
+            <AreaChart data={chartData} margin={{ top: 8, right: 4, bottom: 4, left: 4 }}>
               <defs>
                 <linearGradient id="tempGrad" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor="#f97316" stopOpacity={0.4} />
@@ -66,7 +66,7 @@ export default function HourlyForecast() {
         </div>
       )}
 
-      <div ref={scrollRef} className="flex gap-1 overflow-x-auto pb-3 px-2 pt-1 scroll-smooth">
+      <div ref={scrollRef} className="flex gap-1 overflow-x-auto pb-1 pt-4 scroll-smooth">
         {hours.map((h) => h && (
           <button
             key={h.hour}
@@ -74,7 +74,7 @@ export default function HourlyForecast() {
             onClick={() => setCurrentHour(h.hour)}
             className={`flex-none flex flex-col items-center gap-1 px-2 py-2 rounded-lg transition-colors min-w-[52px] ${
               h.hour === currentHour
-                ? 'bg-blue-500/20 border border-blue-500/40'
+                ? 'bg-orange-500/20 border border-orange-500/40'
                 : 'hover:bg-white/5'
             }`}
           >

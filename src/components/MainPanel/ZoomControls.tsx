@@ -14,7 +14,7 @@ export default function ZoomControls() {
           onClick={() => setZoomLevel(z)}
           className={`px-3 py-1.5 text-xs font-medium transition-colors border-b border-white/10 last:border-0 ${
             zoomLevel === z
-              ? 'bg-blue-500/20 text-blue-300'
+              ? 'bg-orange-500/20 text-orange-300'
               : 'bg-panel-700 text-slate-400 hover:text-white hover:bg-white/5'
           }`}
         >

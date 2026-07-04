@@ -18,9 +18,9 @@ const PERIODS: { key: Period; label: string }[] = [
 
 const CAT_META: Record<DayCat, { color: string; label: string }> = {
   sunny:        { color: '#fbbf24', label: 'Sunny' },
-  cloudy:       { color: '#64748b', label: 'Cloudy' },
-  'light-rain': { color: '#60a5fa', label: 'Light rain' },
-  rain:         { color: '#2563eb', label: 'Rain' },
+  cloudy:       { color: '#6FA1BF', label: 'Cloudy' },
+  'light-rain': { color: '#6687D7', label: 'Light rain' },
+  rain:         { color: '#33449C', label: 'Rain' },
 };
 
 function catFromValues(precip: number, code: number, heavyThresh: number, lightThresh: number): DayCat {
@@ -36,24 +36,25 @@ export default function RainSunCalendar() {
   const [period, setPeriod] = useState<Period>('day');
 
   return (
-    <div className="rounded-xl bg-panel-800 border border-white/5 p-4">
-      <p className="text-xs text-slate-400 uppercase tracking-widest mb-3">Rain &amp; Sun Calendar</p>
-
-      {/* Period selector */}
-      <div className="flex gap-1 mb-4 flex-wrap">
-        {PERIODS.map(({ key, label }) => (
-          <button
-            key={key}
-            onClick={() => setPeriod(key)}
-            className={`px-2 py-1 rounded-md text-[11px] font-medium transition-colors ${
-              period === key
-                ? 'bg-blue-500/20 text-blue-300 border border-blue-500/40'
-                : 'bg-white/5 text-slate-400 border border-transparent hover:text-slate-200'
-            }`}
-          >
-            {label}
-          </button>
-        ))}
+    <div className="py-6">
+      {/* Header with period selector on the right */}
+      <div className="flex items-center justify-between gap-2 mb-4 flex-wrap">
+        <p className="text-md font-semibold text-white">Rain &amp; sun calendar</p>
+        <div className="flex gap-1 flex-wrap">
+          {PERIODS.map(({ key, label }) => (
+            <button
+              key={key}
+              onClick={() => setPeriod(key)}
+              className={`px-2 py-1 rounded-md text-[11px] font-medium transition-colors ${
+                period === key
+                  ? 'bg-orange-500/20 text-orange-300 border border-orange-500/40'
+                  : 'bg-white/5 text-slate-400 border border-transparent hover:text-slate-200'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {loading && !data ? (
@@ -70,8 +71,8 @@ export default function RainSunCalendar() {
           {/* Legend */}
           {period === 'half' || period === 'year' ? (
             <div className="flex gap-3 mt-3">
-              <LegendItem color="#2563eb" label="Rainy days" />
-              <LegendItem color="#fbbf24" label="Dry days" />
+              <LegendItem color="#33449C" label="Rainy days" />
+              <LegendItem color="#EEA530" label="Dry days" />
             </div>
           ) : (
             <div className="flex flex-wrap gap-x-3 gap-y-1 mt-3">
@@ -201,7 +202,7 @@ function MonthlyView({ city, months }: { city: ReturnType<typeof useDashboardSto
           <div className="flex-1 h-4 rounded-full overflow-hidden flex bg-white/5">
             <div
               className="h-full"
-              style={{ width: `${r.rainPct}%`, backgroundColor: '#2563eb' }}
+              style={{ width: `${r.rainPct}%`, backgroundColor: '#33449C' }}
               title={`${r.rainDays} rainy days`}
             />
             <div

@@ -99,7 +99,7 @@ export default function TimelinePlayback() {
   return (
     <div className="flex items-stretch gap-3 flex-none">
       {/* Date Controls */}
-      <div className="flex items-center rounded-lg overflow-hidden flex-none">
+      <div className="flex items-stretch rounded-lg overflow-hidden flex-none w-56">
         {VIEWS.map((v) => (
           <Button
             key={v}
@@ -107,9 +107,9 @@ export default function TimelinePlayback() {
             size="sm"
             onClick={() => setTimelineView(v)}
             className={cn(
-              'h-auto rounded-none px-3 py-1 font-medium capitalize',
+              'h-full flex-1 px-3 py-1 text-sm font-medium capitalize',
               timelineView === v
-                ? 'bg-white text-navy-900 hover:bg-white hover:text-navy-900'
+                ? 'bg-white text-slate-900 hover:bg-white hover:text-slate-900'
                 : 'text-slate-400 hover:text-white'
             )}
           >
@@ -129,7 +129,7 @@ export default function TimelinePlayback() {
             onChange={(e) => handleChange(parseInt(e.target.value))}
             className="w-full"
             style={{
-              background: `linear-gradient(to right, #3b82f6 ${percent}%, #1e2d4a ${percent}%)`,
+              background: `linear-gradient(to right, #f97316 ${percent}%, #1e2d4a ${percent}%)`,
             }}
           />
           <div className="absolute top-0 left-0 right-0 h-4 text-[10px] text-slate-500 font-mono">
@@ -152,7 +152,7 @@ export default function TimelinePlayback() {
           variant="ghost"
           size="icon"
           onClick={() => setIsPlaying(!isPlaying)}
-          className="h-auto w-auto text-white hover:text-white hover:bg-transparent [&_svg]:size-3"
+          className="h-auto w-auto text-white hover:text-white hover:bg-transparent [&_svg]:size-6"
         >
           {isPlaying ? <HiPause size={12} /> : <HiPlay size={12} />}
         </Button>
@@ -162,7 +162,7 @@ export default function TimelinePlayback() {
       <div className="flex flex-col gap-1 flex-none justify-center bg-panel-700 border border-white/10 rounded-lg px-3 py-0.5">
         <Button
           variant="ghost"
-          size="sm"
+          size="md"
           onClick={handleToday}
           className="h-auto px-0 py-0 font-medium text-white hover:text-white hover:bg-transparent"
         >
