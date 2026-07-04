@@ -162,7 +162,7 @@ export default function TimelinePlayback() {
       <div className="flex flex-col gap-1 flex-none justify-center bg-panel-700 border border-white/10 rounded-lg px-3 py-0.5">
         <Button
           variant="ghost"
-          size="md"
+          size="sm"
           onClick={handleToday}
           className="h-auto px-0 py-0 font-medium text-white hover:text-white hover:bg-transparent"
         >

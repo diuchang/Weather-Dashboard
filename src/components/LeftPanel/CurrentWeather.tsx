@@ -1,7 +1,6 @@
 import { useDashboardStore } from '../../store/dashboardStore';
 import { useWeather } from '../../hooks/useWeather';
 import { getWeatherInfo } from '../../utils/weatherCodes';
-import WeatherIcon from '../shared/WeatherIcon';
 import LoadingSpinner from '../shared/LoadingSpinner';
 import { WiHumidity, WiStrongWind } from 'react-icons/wi';
 
